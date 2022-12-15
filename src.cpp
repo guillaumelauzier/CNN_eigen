@@ -59,4 +59,24 @@ MatrixXd conv_out = input;
 for (int i = 0; i < NUM_CONV_LAYERS; i++) {
 conv_out = (conv_out.convolve(conv_W[i]) + conv_b[i]).unaryExpr(std::ptr_fun(sigmoid));
   
-  // Perform the pool
+ // Perform the pool
+int main() {
+// Load the input data
+Mat input_image = imread("input.png", CV_LOAD_IMAGE_COLOR);
+
+// Convert the input data to a matrix
+MatrixXd input = MatrixXd::Map(input_image.data, input_image.rows, input_image.cols, input_image.channels());
+
+// Create a CNN object with the desired configuration
+CNN cnn(input_image.rows, input_image.cols, input_image.channels(), 10);
+
+// Perform a forward pass through the CNN
+MatrixXd output = cnn.forward(input);
+
+// Print the output of the CNN
+std::cout << "CNN output:\n" << output << std::endl;
+
+// Wait for a key press before exiting
+waitKey(0);
+return 0;
+}
